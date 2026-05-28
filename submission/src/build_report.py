@@ -978,34 +978,82 @@ Latency & 单样本推理时间，衡量部署代价。\\
 \bibitem{dropout} N. Srivastava et al., "Dropout: A Simple Way to Prevent Neural Networks from Overfitting," JMLR, 2014.
 \end{thebibliography}
 
+\newpage
 \vspace{-2pt}
 \noindent{\color{SectionBlue}\bfseries 核心代码贴片与复现}\par\vspace{1pt}
-\noindent\textbf{训练闭环与检测评价。}
+\noindent\textbf{实验一：NumPy 向量化与分块。}
 \begin{lstlisting}[language=Python]
-for epoch in range(epochs):
+def pairwise_distance(X, Z, block=512):
+    out = np.empty((len(X), len(Z)), dtype=np.float32)
+    z2 = (Z * Z).sum(axis=1)[None, :]
+    for s in range(0, len(X), block):
+        xb = X[s:s + block]
+        x2 = (xb * xb).sum(axis=1)[:, None]
+        out[s:s + block] = x2 + z2 - 2 * xb @ Z.T
+    return np.maximum(out, 0)
+\end{lstlisting}
+\noindent\textbf{实验二/三：PyTorch 训练与模型对照。}
+\begin{lstlisting}[language=Python]
+def train_epoch(model, loader, optimizer, criterion, device):
     model.train()
-    for x, y in train_loader:
-        opt.zero_grad()
-        loss = criterion(model(x.to(device)), y.to(device))
+    for x, y in loader:
+        x, y = x.to(device), y.to(device)
+        optimizer.zero_grad(set_to_none=True)
+        loss = criterion(model(x), y)
         loss.backward()
-        opt.step()
-    metrics.append(evaluate(model, test_loader))
+        optimizer.step()
 
-for pred in sorted(preds, key=lambda p: -p["score"]):
-    gt = best_unmatched_gt(pred, targets)
-    if gt is not None and box_iou(pred["box"], gt["box"]) >= 0.5:
-        tp += 1; gt["used"] = True
-    else:
-        fp += 1
-fn = sum(not gt["used"] for gt in targets)
+configs = [
+    ("cnn", SmallCNN()),
+    ("cnn_bn_aug", SmallCNN(batch_norm=True, dropout=0.25)),
+    ("resnet18_head", frozen_resnet18(num_classes=10)),
+]
+for name, model in configs:
+    history[name] = fit_and_eval(model, train_loader, test_loader)
 \end{lstlisting}
-\noindent\textbf{鲁棒评估与复现。}
+\noindent\textbf{实验四：Faster R-CNN 与 AP50。}
 \begin{lstlisting}[language=Python]
-delta = eps * x.grad.sign()
-x_adv = torch.clamp(x + delta, 0, 1)
-robust_acc = accuracy(model(x_adv), y)
+def pennfudan_target(mask):
+    ids = np.unique(mask)[1:]
+    masks = mask[None] == ids[:, None, None]
+    boxes = masks_to_boxes(torch.as_tensor(masks, dtype=torch.uint8))
+    return {"boxes": boxes, "labels": torch.ones(len(ids), dtype=torch.int64)}
+
+model.roi_heads.nms_thresh = 0.5
+for image, target in test_set:
+    pred = model([image.to(device)])[0]
+    pred = filter_by_score(pred, threshold=0.5)
+    for box, score in sorted(zip(pred["boxes"], pred["scores"]), key=lambda z: -z[1]):
+        match = best_unmatched_iou(box.cpu(), target["boxes"])
+        if match.iou >= 0.5:
+            tp += 1; mark_used(match.gt_id)
+        else:
+            fp += 1
+fn = len(all_gt) - tp
+precision, recall = tp / (tp + fp), tp / (tp + fn)
+ap50 = integrate_pr_curve(all_detections, all_gt, iou_thr=0.5)
 \end{lstlisting}
-\noindent 复现入口为 \texttt{.\textbackslash run\_all.ps1 -Stage all -Profile full -Device auto -Seed 2026}。核心代码位于 \texttt{submission/src/experiments.py}、\texttt{figures.py} 与 \texttt{build\_report.py}；数据下载、训练、绘图、报告编译和检查均由统一脚本串联。
+\noindent\textbf{实验五：FGSM、ECE 与多目标取舍。}
+\begin{lstlisting}[language=Python]
+def fgsm_batch(model, x, y, eps):
+    x = x.detach().clone().requires_grad_(True)
+    loss = F.cross_entropy(model(x), y)
+    loss.backward()
+    return torch.clamp(x + eps * x.grad.sign(), 0, 1)
+
+def ece(conf, ok, bins=10):
+    err = 0.0
+    for lo, hi in zip(np.linspace(0, 1, bins, endpoint=False), np.linspace(0.1, 1, bins)):
+        m = (conf > lo) & (conf <= hi)
+        if m.any():
+            err += m.mean() * abs(ok[m].mean() - conf[m].mean())
+    return err
+
+for seed in [2026, 2027, 2028]:
+    for eps in [0, 1/255, 2/255, 4/255, 8/255]:
+        robust_curve[seed, eps] = eval_fgsm(model, test_loader, eps)
+\end{lstlisting}
+\noindent 复现入口为 \texttt{.\textbackslash run\_all.ps1 -Stage all -Profile full -Device auto -Seed 2026}。核心代码位于 \texttt{submission/src/experiments.py}、\texttt{figures.py} 与 \texttt{build\_report.py}；数据下载、训练、绘图、报告编译和检查均由统一脚本串联。公开仓库：\href{https://github.com/JustinZHAO-05/pattern-recognition-brain-like-intelligence-experiments}{github.com/JustinZHAO-05/pattern-recognition-brain-like-intelligence-experiments}。
 \end{document}
 """
 
