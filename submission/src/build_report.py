@@ -185,7 +185,7 @@ TEMPLATE = r"""
 \pagestyle{plain}
 \captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
 \setlist[itemize]{leftmargin=1.0em,itemsep=0pt,topsep=0pt}
-\lstset{basicstyle=\ttfamily\tiny,breaklines=true,columns=fullflexible,frame=single,xleftmargin=0pt,xrightmargin=0pt,aboveskip=1pt,belowskip=1pt}
+\lstset{basicstyle=\ttfamily\fontsize{5.7pt}{6.0pt}\selectfont,breaklines=true,columns=fullflexible,frame=single,xleftmargin=0pt,xrightmargin=0pt,aboveskip=1pt,belowskip=1.5pt}
 \definecolor{SectionBlue}{HTML}{1F4E79}
 \definecolor{SubsectionBlue}{HTML}{315F86}
 \titlespacing*{\section}{0pt}{9pt}{4pt}
@@ -1053,6 +1053,7 @@ for seed in [2026, 2027, 2028]:
     for eps in [0, 1/255, 2/255, 4/255, 8/255]:
         robust_curve[seed, eps] = eval_fgsm(model, test_loader, eps)
 \end{lstlisting}
+\vspace{2pt}
 \noindent 复现入口为 \texttt{.\textbackslash run\_all.ps1 -Stage all -Profile full -Device auto -Seed 2026}。核心代码位于 \texttt{submission/src/experiments.py}、\texttt{figures.py} 与 \texttt{build\_report.py}；数据下载、训练、绘图、报告编译和检查均由统一脚本串联。公开仓库：\href{https://github.com/JustinZHAO-05/pattern-recognition-brain-like-intelligence-experiments}{github.com/JustinZHAO-05/pattern-recognition-brain-like-intelligence-experiments}。
 \end{document}
 """
