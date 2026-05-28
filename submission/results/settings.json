@@ -1,0 +1,109 @@
+{
+  "profile": "full",
+  "rows": [
+    {
+      "experiment": "实验一",
+      "dataset": "合成数组/示例图像",
+      "train_samples": "-",
+      "test_samples": "-",
+      "epochs": "-",
+      "batch_size": "-",
+      "learning_rate": "-",
+      "optimizer": "-",
+      "model": "NumPy 向量化",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验二",
+      "dataset": "FashionMNIST",
+      "train_samples": 10000,
+      "test_samples": 2000,
+      "epochs": 5,
+      "batch_size": "64/128",
+      "learning_rate": "1e-2/1e-3",
+      "optimizer": "SGD/Adam",
+      "model": "MLP",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验三",
+      "dataset": "CIFAR-10",
+      "train_samples": 10000,
+      "test_samples": 2000,
+      "epochs": 6,
+      "batch_size": "96/256",
+      "learning_rate": "1e-3",
+      "optimizer": "AdamW",
+      "model": "CNN/CNN+BN+Aug",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验三",
+      "dataset": "CIFAR-10",
+      "train_samples": 3000,
+      "test_samples": 1000,
+      "epochs": 4,
+      "batch_size": "64/128",
+      "learning_rate": "2e-3",
+      "optimizer": "AdamW",
+      "model": "ResNet18 transfer",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验四",
+      "dataset": "Hymenoptera",
+      "train_samples": 245,
+      "test_samples": 153,
+      "epochs": 6,
+      "batch_size": "16/32",
+      "learning_rate": "1e-3",
+      "optimizer": "AdamW",
+      "model": "ResNet18 frozen",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验四",
+      "dataset": "PennFudanPed",
+      "train_samples": 120,
+      "test_samples": 50,
+      "epochs": 3,
+      "batch_size": 1,
+      "learning_rate": "0.002",
+      "optimizer": "SGD",
+      "model": "Faster R-CNN R50-FPN",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验四",
+      "dataset": "CelebA 子集",
+      "train_samples": 256,
+      "test_samples": "-",
+      "epochs": 2,
+      "batch_size": 64,
+      "learning_rate": "2e-4",
+      "optimizer": "Adam",
+      "model": "DCGAN",
+      "seed": "2026",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    },
+    {
+      "experiment": "实验五",
+      "dataset": "CIFAR-10",
+      "train_samples": 5000,
+      "test_samples": 1000,
+      "epochs": 4,
+      "batch_size": "96/128",
+      "learning_rate": "1e-3",
+      "optimizer": "AdamW",
+      "model": "SmallCNN 三组对照",
+      "seed": "2026/2027/2028",
+      "hardware": "RTX 4050 Laptop GPU / CUDA"
+    }
+  ]
+}

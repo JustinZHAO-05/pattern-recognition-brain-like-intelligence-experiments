@@ -1,0 +1,8 @@
+{
+  "fashion_mnist": "True",
+  "mnist": "True",
+  "cifar10": "True",
+  "hymenoptera": "True",
+  "penn_fudan": "True",
+  "celeba_subset_count": 256
+}

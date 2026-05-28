@@ -1,0 +1,19 @@
+{
+  "seed": 2026,
+  "python": "Python 3.12.13",
+  "nvidia_smi": "NVIDIA GeForce RTX 4050 Laptop GPU, 6141 MiB, 592.07",
+  "xelatex": [
+    "XeTeX 3.141592653-2.6-0.999997 (TeX Live 2025)",
+    "kpathsea version 6.4.1"
+  ],
+  "pdftoppm": [
+    "pdftoppm version 25.02.0",
+    "Copyright 2005-2025 The Poppler Developers - http://poppler.freedesktop.org"
+  ],
+  "torch": "2.11.0+cu128",
+  "torchvision": "0.26.0+cu128",
+  "cuda_available": true,
+  "device": "cuda",
+  "cuda_device_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "tensor_check_mean": 63.65396499633789
+}
