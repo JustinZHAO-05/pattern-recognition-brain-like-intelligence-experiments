@@ -963,6 +963,7 @@ Latency & 单样本推理时间，衡量部署代价。\\
 
 这些指标互相补充。准确率高但 ECE 大，说明模型可能过度自信；IoU 高但 recall 低，说明命中目标定位较好但漏检仍多；鲁棒准确率高但延迟大，说明部署时需要权衡资源。最终模型评价应从任务风险出发，把性能、可靠性和代价共同纳入判断。
 
+\clearpage
 \begin{thebibliography}{9}\footnotesize
 \bibitem{python} Python Software Foundation. Python 3 Documentation.
 \bibitem{numpy} C. R. Harris et al., "Array programming with NumPy," Nature, 2020.
