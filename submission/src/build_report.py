@@ -880,6 +880,7 @@ SE=\sqrt{\frac{1}{S(S-1)}\sum_s(a_s-\bar a)^2}.
 
 \begin{center}
 \captionof{table}{鲁棒实验指标的含义。}
+\begingroup\scriptsize\renewcommand{\arraystretch}{0.84}\setlength{\tabcolsep}{2pt}
 \begin{tabular}{p{0.25\linewidth}p{0.62\linewidth}}
 \toprule
 指标 & 解释\\
@@ -890,6 +891,7 @@ ECE & 置信度与经验准确率差异，衡量校准。\\
 Latency & 单图推理时间，衡量部署代价。\\
 \bottomrule
 \end{tabular}
+\endgroup
 \end{center}
 
 从结果选择角度看，若某模型 clean 略低但 FGSM 与 ECE 明显更好，在安全敏感任务中仍可能更优。相反，若应用只处理低风险离线分类，clean accuracy 权重可以更高。额外实验的价值就在于把这种取舍显式化，让模型选择从“谁的准确率高”转向“谁在给定风险约束下更合适”。
@@ -945,6 +947,7 @@ Latency & 单图推理时间，衡量部署代价。\\
 
 \begin{center}
 \captionof{table}{报告中关键指标的解释。}
+\begingroup\scriptsize\renewcommand{\arraystretch}{0.84}\setlength{\tabcolsep}{2pt}
 \begin{tabular}{p{0.22\linewidth}p{0.65\linewidth}}
 \toprule
 指标 & 含义\\
@@ -955,6 +958,7 @@ ECE & 置信度与经验准确率差异，衡量概率校准。\\
 Latency & 单样本推理时间，衡量部署代价。\\
 \bottomrule
 \end{tabular}
+\endgroup
 \end{center}
 
 这些指标互相补充。准确率高但 ECE 大，说明模型可能过度自信；IoU 高但 recall 低，说明命中目标定位较好但漏检仍多；鲁棒准确率高但延迟大，说明部署时需要权衡资源。最终模型评价应从任务风险出发，把性能、可靠性和代价共同纳入判断。
