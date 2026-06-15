@@ -27,6 +27,7 @@ submission/figures/preview/
 
 # Course handouts / editable documents may contain personal metadata.
 *.docx
+模式识别与类脑智能期末实验报告.pdf
 00Python/*.pdf
 01Python Numpy/*.pdf
 02PyTorch/*.pdf
